@@ -10,7 +10,7 @@ import { Events } from 'ionic-angular';
 export class RoomPage implements OnInit{
 	temperature = 25;
 	humidity = 68;
-	refreshInterval = 60000;
+	refreshInterval = 1000;
   
   constructor(public events: Events) {
 	}
@@ -31,9 +31,9 @@ export class RoomPage implements OnInit{
   }
 
   _subscribe(){
-  	this.events.subscribe('measure:received', (measures) => {
-  		this.temperature = measures.temperature
-  		this.humidity = measures.humidity
+  	this.events.subscribe('measure:received', (newMeasure) => {
+  		this.temperature = newMeasure.temperature
+  		this.humidity = newMeasure.humidity
   	})
   }
 }

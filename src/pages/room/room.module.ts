@@ -8,6 +8,6 @@ import { RoomPage } from './room';
   ],
   imports: [
     IonicPageModule.forChild(RoomPage),
-  ],
+  ]
 })
 export class RoomPageModule {}

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Nav, Platform } from 'ionic-angular';
-
+import { MeasuresProvider } from '../providers/measures/measures';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +16,8 @@ export class MyApp {
 
   constructor(public platform: Platform, 
               public statusBar: StatusBar, 
-              public splashScreen: SplashScreen) {
+              public splashScreen: SplashScreen,
+              private measuresProvider: MeasuresProvider) {
   }
 
   ionViewDidLoad() {
