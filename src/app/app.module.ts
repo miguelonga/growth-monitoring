@@ -6,6 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { MeasuresProvider } from '../providers/measures/measures';
+import { AlertsProvider } from '../providers/alerts/alerts';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MeasuresProvider } from '../providers/measures/measures';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    MeasuresProvider
+    MeasuresProvider,
+    AlertsProvider
   ]
 })
 export class AppModule { }
