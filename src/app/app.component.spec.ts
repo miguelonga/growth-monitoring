@@ -38,7 +38,7 @@ describe('MyApp Component', () => {
     expect(component instanceof MyApp).toBe(true);
   });
 
-  it('should have two pages', () => {
+  it('should use room page as default page', () => {
     expect(component.rootPage).toBe('RoomPage');
   });
 

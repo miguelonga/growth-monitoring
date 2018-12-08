@@ -7,7 +7,61 @@
 </ion-header>
 
 
-<ion-content padding>
-	<h3 id="temperature">{{temperature}}</h3>
-	<h3 id="humidity">{{humidity}}</h3>
+<ion-content>
+	<ion-list>
+	    <ion-list-header>Actual</ion-list-header>
+
+	    <ion-item padding>
+	      <ion-avatar item-start>
+	      	<ion-icon color="danger" name="ios-thermometer-outline"></ion-icon>
+	      </ion-avatar>
+	      <h1 id="temperature" item-start>{{temperature}}</h1>
+	      
+	      <h1 id="humidity" item-end>{{humidity}}</h1>
+	      <ion-avatar item-end>
+	      	<ion-icon color="primary" name="ios-water-outline"></ion-icon>
+	      </ion-avatar>
+	    </ion-item>
+	</ion-list>
+
+	<ion-list>
+	    <ion-list-header>Today</ion-list-header>
+
+	    <ion-item>
+	      <ion-avatar item-start>
+	      	<ion-icon color="danger" name="ios-thermometer-outline"></ion-icon>
+	      </ion-avatar>
+	      <h2>Max temerature 29.4</h2>
+	      <p>With 34.2% humidity</p>
+	      <ion-note item-end>3:43 pm</ion-note>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-avatar item-start>
+	      	<ion-icon color="danger" name="ios-thermometer-outline"></ion-icon>
+	      </ion-avatar>
+	      <h2>Min temerature 20.2</h2>
+	      <p>With 75.4% humidity</p>
+	      <ion-note item-end>1:12 am</ion-note>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-avatar item-start>
+	      	<ion-icon color="primary" name="ios-water-outline"></ion-icon>
+	      </ion-avatar>
+	      <h2>Max humidity 75.4%</h2>
+	      <p>With 20.2 of temperature</p>
+	      <ion-note item-end>10:03 am</ion-note>
+	    </ion-item>
+
+	    <ion-item>
+	      <ion-avatar item-start>
+	      	<ion-icon large color="primary" name="ios-water-outline"></ion-icon>
+	      </ion-avatar>
+	      <h2>Min humidity 34.2%</h2>
+	      <p>With 29.4 of temperature</p>
+	      <ion-note item-end>5:47 am</ion-note>
+	    </ion-item>
+
+	  </ion-list>
 </ion-content>

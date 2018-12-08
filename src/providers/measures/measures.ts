@@ -1,27 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Events } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import * as measures from './fake-data.json'
 
 @Injectable()
 export class MeasuresProvider {
 
-  constructor(public events: Events) {
-    this._subscribe()
+	data = measures
+
+  constructor() {
   }
 
-  read(){
-  	let randomTemperature = (Math.random() * (26.0 - 23.0 + 1.0) + 23.0).toFixed(1);
-  	let randomHumidity = (Math.random() * (66.0 - 62.0 + 1) + 62.0).toFixed(1);
-  	let newMeasure = {
-  		temperature: randomTemperature,
-  		humidity: randomHumidity
-  	}
-  	this.events.publish('measure:received', newMeasure)
+  measure(): Observable<any>{
+  	return Observable.of(this.data[0])
   }
-
-  _subscribe(){
-  	this.events.subscribe('measure:reading', (room) => {
-  		this.read()
-  	})
-  }	
-
 }

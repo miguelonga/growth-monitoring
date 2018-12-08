@@ -6,6 +6,22 @@ import { IonicModule } from 'ionic-angular/index';
 import { Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { MeasuresProvider } from '../../providers/measures/measures'
+import { Observable } from 'rxjs';
+
+class MeasuresProviderStub {
+  constructor() {
+  }
+
+  measure(): Observable<any>{
+    const newMeasure = {
+      date: '2018-11-30 19:17:23',
+      temperature: 20.69,
+      humidity: 75.32
+    }
+    return Observable.of(newMeasure)
+  }
+}
 
 describe('RoomPage', () => {
   let debugElement: DebugElement;
@@ -18,7 +34,7 @@ describe('RoomPage', () => {
       imports: [
         IonicModule.forRoot(RoomPage)
       ],
-      providers: []
+      providers: [{provide: MeasuresProvider, useClass: MeasuresProviderStub}]
     });
   }));
 
@@ -60,26 +76,20 @@ describe('RoomPage', () => {
     discardPeriodicTasks()
   }));
 
-  // it('should publish measure:reading event when measure() is called', () => {
-    
-  // })
-
-  it('is subscribed for new measuring changes', () => {
-    let temperature = component.temperature
-    let humidity = component.humidity
+  it('renders new value each time it is measured', fakeAsync(() => {
+    const refreshInterval = component.refreshInterval
     component.ngOnInit()
-    
-    let newMeasures = {
-      temperature: 0,
-      humidity: 0
+    const stubedMeasure = {
+      date: '2018-11-30 19:17:23',
+      temperature: 20.69,
+      humidity: 75.32
     }
 
-    component.events.publish('measure:received', newMeasures)
+    tick(refreshInterval)
 
-    temperature = component.temperature
-    humidity = component.humidity
+    expect(component.temperature).toBe(stubedMeasure.temperature)
+    expect(component.humidity).toBe(stubedMeasure.humidity)
 
-    expect(temperature).toBe(0)
-    expect(humidity).toBe(0)
-  })
+    discardPeriodicTasks()
+  }));
 });

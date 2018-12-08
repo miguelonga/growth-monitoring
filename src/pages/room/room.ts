@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import { Events } from 'ionic-angular';
+import { MeasuresProvider } from '../../providers/measures/measures'
 
 @IonicPage()
 @Component({
@@ -12,28 +13,23 @@ export class RoomPage implements OnInit{
 	humidity = 68;
 	refreshInterval = 1000;
   
-  constructor(public events: Events) {
+  constructor(public measuresProvider: MeasuresProvider) {
 	}
 
 	ngOnInit(){
   	this._start()
-  	this._subscribe()
 	}
 
   measure(){
-  	this.events.publish('measure:reading', {})
+  	this.measuresProvider.measure().subscribe(measure=> {
+  		this.temperature = measure.temperature
+  		this.humidity = measure.humidity
+  	})
   }
 
   _start(){
   	let measureInterval = setInterval(() => {
   		this.measure()
   	}, this.refreshInterval)
-  }
-
-  _subscribe(){
-  	this.events.subscribe('measure:received', (newMeasure) => {
-  		this.temperature = newMeasure.temperature
-  		this.humidity = newMeasure.humidity
-  	})
   }
 }

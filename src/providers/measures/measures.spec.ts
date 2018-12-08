@@ -4,7 +4,7 @@ import { Events } from 'ionic-angular';
 
 describe('MeasuresProvider', () => {
 
-  let service;
+  let provider;
 
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ 
@@ -13,20 +13,27 @@ describe('MeasuresProvider', () => {
     ]
   }));
 
-  beforeEach(inject([MeasuresProvider], (s) => {
-    service = s;
-	}
+  beforeEach(inject([MeasuresProvider], (p) => {
+    provider = p;
+	}));
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
-  }));
+    expect(provider).toBeTruthy();
+  });
 
-  it('should be subscribed to measure:reading event', fakeAsync(() => {
-    let readSpy = spyOn(service, 'read').and.callThrough()
-    expect(readSpy.calls.any()).toBe(false)
+  it('should return an observable of a measure interface', (done) => {
+  	let expectedResponse = {
+  		date: 'some date',
+  		temperature: 'some temperature',
+  		humidity: 'some humidity'
+  	}
+  	let expectedResponseKeys = Object.keys(expectedResponse)
+  	
+  	provider.measure().subscribe((measure) => {
+  		let responseKeys = Object.keys(measure)
+  		expect(expectedResponseKeys).toEqual(responseKeys)
+  		done()
+  	})
 
-    service.events.publish('measure:reading', {})
-
-    expect(readSpy.calls.count()).toBe(1)
-  }));
+  })
 });
