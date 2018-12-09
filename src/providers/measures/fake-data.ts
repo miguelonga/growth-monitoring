@@ -1,4 +1,4 @@
-[
+export let fakeData = [
   {
     "date": "2018-11-30 15:52:23",
     "temperature": 23.27,

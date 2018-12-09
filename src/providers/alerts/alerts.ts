@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { growthRules } from './rules';
 import { alertMessages } from './alertMessages';
@@ -32,6 +31,6 @@ export class AlertsProvider {
   }
 
   showAlert(alert){
-  	
+  	console.log(alert)
   }
 }

@@ -9,12 +9,12 @@ page-room {
 	}
 
 	#temperature{
-		font-size: 3.5em;
+		font-size: 1.9em;
 		color: map-get($colors, danger);
 	}
 
 	#humidity{
-		font-size: 3.5em;
+		font-size: 1.9em;
 		color: map-get($colors, primary);
 	}
 }

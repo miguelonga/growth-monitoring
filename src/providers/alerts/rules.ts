@@ -1,6 +1,6 @@
 export let growthRules = {
-	maxTemperature: 30,
-	minTemperature: 16,
-	maxHumidity: 70,
-	minHumidity: 40
+	maxTemperature: 28,
+	minTemperature: 24,
+	maxHumidity: 60,
+	minHumidity: 50
 }

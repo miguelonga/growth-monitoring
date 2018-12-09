@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
-import { Events } from 'ionic-angular';
 import { MeasuresProvider } from '../../providers/measures/measures'
 
 @IonicPage()
@@ -9,8 +8,8 @@ import { MeasuresProvider } from '../../providers/measures/measures'
   templateUrl: 'room.html',
 })
 export class RoomPage implements OnInit{
-	temperature = 25;
-	humidity = 68;
+	temperature$;
+	humidity$;
 	refreshInterval = 1000;
   
   constructor(public measuresProvider: MeasuresProvider) {
@@ -22,8 +21,8 @@ export class RoomPage implements OnInit{
 
   measure(){
   	this.measuresProvider.measure().subscribe(measure=> {
-  		this.temperature = measure.temperature
-  		this.humidity = measure.humidity
+  		this.temperature$ = measure.temperature
+  		this.humidity$ = measure.humidity
   	})
   }
 
