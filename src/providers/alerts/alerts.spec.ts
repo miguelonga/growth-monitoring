@@ -83,4 +83,28 @@ describe('AlertsProvider', () => {
 
     expect(showAlertSpy).toHaveBeenCalledWith(expectedMessage)
   })
+
+  it('should be able to edit the measure rules', () => {
+    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let newRules = {
+      maxTemperature: growthRules.maxTemperature - 2,
+      minTemperature: growthRules.minTemperature,
+      maxHumidity: growthRules.maxHumidity - 2,
+      minHumidity: growthRules.minHumidity
+    }
+    let measureForNewRulesMaximumsFailures = {
+      date: 'some date',
+      temperature: newRules.maxTemperature + 1,
+      humidity: newRules.maxHumidity + 1 
+    }
+    let expectedHumidityMessage = alertMessages.maxHumidity
+    let expectedTemperatureMessage = alertMessages.maxTemperature
+    expect(showAlertSpy.calls.any()).toBe(false)
+
+    provider.editRules(newRules)   
+    provider.check(measureForNewRulesMaximumsFailures)
+
+    expect(showAlertSpy).toHaveBeenCalledWith(expectedTemperatureMessage)
+    expect(showAlertSpy).toHaveBeenCalledWith(expectedHumidityMessage)
+  })
 });

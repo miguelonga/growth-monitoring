@@ -19,7 +19,7 @@ export class MeasuresProvider {
   }
 
   simulateMeasure(){
-  	if(this.index === this.data.lenght){
+  	if(this.index === this.data.length){
   		this.index = 0
   	}
   	this.index += 1

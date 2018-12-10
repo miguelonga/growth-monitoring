@@ -33,4 +33,8 @@ export class AlertsProvider {
   showAlert(alert){
   	console.log(alert)
   }
+
+  editRules(rules){
+    this.rules = rules
+  }
 }

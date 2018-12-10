@@ -46,21 +46,31 @@ describe('RoomPage', () => {
 
   it('should create component', () => expect(component).toBeDefined());
 
-  it('should display temperature value as number', () => {
-    const debugElement = fixture.debugElement.query(By.css('#temperature'));
-    const temperature = component.temperature
-    const displayedTemperature = debugElement.nativeElement.innerText
+  it('should display temperature value as number', fakeAsync(() => {
+    component.ngOnInit()
+    tick(component.refreshInterval)
+    fixture.detectChanges()
     
-    expect(temperature === Number(displayedTemperature)).toBe(true)
-  });
+    const temperature = component.temperature$
+    const debugElement = fixture.debugElement.query(By.css('#temperature'));
+    const displayedTemperature = debugElement.nativeElement.innerText
 
-  it('should display humidity value as number', () => {
+    expect(temperature === Number(displayedTemperature)).toBe(true)
+    discardPeriodicTasks()
+  }));
+
+  it('should display humidity value as number', fakeAsync(() => {
+    component.ngOnInit()
+    tick(component.refreshInterval)
+    fixture.detectChanges()
+    
     const debugElement = fixture.debugElement.query(By.css('#humidity'));
-    const humidity = component.humidity
+    const humidity = component.humidity$
     const displayedHumidity = debugElement.nativeElement.innerText
 
     expect(humidity === Number(displayedHumidity)).toBe(true)
-  });
+    discardPeriodicTasks()
+  }));
 
   it('asks for actual temperature and humidity anytime the interval has been expired', fakeAsync(() => {
     const refreshInterval = component.refreshInterval
@@ -73,6 +83,7 @@ describe('RoomPage', () => {
 
     expect(measureSpy.calls.count()).toBe(1)
 
+    discardPeriodicTasks()
     discardPeriodicTasks()
   }));
 
@@ -87,8 +98,8 @@ describe('RoomPage', () => {
 
     tick(refreshInterval)
 
-    expect(component.temperature).toBe(stubedMeasure.temperature)
-    expect(component.humidity).toBe(stubedMeasure.humidity)
+    expect(component.temperature$).toBe(stubedMeasure.temperature)
+    expect(component.humidity$).toBe(stubedMeasure.humidity)
 
     discardPeriodicTasks()
   }));

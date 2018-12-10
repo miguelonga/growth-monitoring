@@ -1,6 +1,6 @@
 import { TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { MeasuresProvider } from './measures';
-import { Events } from 'ionic-angular';
+import { AlertsProvider } from '../alerts/alerts';
 
 describe('MeasuresProvider', () => {
 
@@ -9,7 +9,7 @@ describe('MeasuresProvider', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ 
     	MeasuresProvider,
-    	Events
+      AlertsProvider
     ]
   }));
 
