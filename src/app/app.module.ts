@@ -7,10 +7,12 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { MeasuresProvider } from '../providers/measures/measures';
 import { AlertsProvider } from '../providers/alerts/alerts';
+import { RoomSettings } from '../pages/room-settings/room-settings';
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    RoomSettings
   ],
   imports: [
     BrowserModule,
@@ -18,7 +20,8 @@ import { AlertsProvider } from '../providers/alerts/alerts';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    RoomSettings
   ],
   providers: [
     StatusBar,

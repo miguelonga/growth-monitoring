@@ -104,3 +104,29 @@ describe('RoomPage', () => {
     discardPeriodicTasks()
   }));
 });
+
+describe('Room Page Object', () => {
+  let debugElement: DebugElement;
+  let component: RoomPage;
+  let fixture: ComponentFixture<RoomPage>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [RoomPage],
+      imports: [
+        IonicModule.forRoot(RoomPage)
+      ],
+      providers: [{provide: MeasuresProvider, useClass: MeasuresProviderStub}]
+    });
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RoomPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('is compiled', () => {
+    expect(component).toBeDefined()
+  })
+})

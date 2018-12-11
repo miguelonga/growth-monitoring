@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, ModalController } from 'ionic-angular';
 import { MeasuresProvider } from '../../providers/measures/measures'
+import { RoomSettings } from '../room-settings/room-settings'
 
 @IonicPage()
 @Component({
@@ -12,7 +13,8 @@ export class RoomPage implements OnInit{
 	humidity$;
 	refreshInterval = 1000;
   
-  constructor(public measuresProvider: MeasuresProvider) {
+  constructor(public measuresProvider: MeasuresProvider,
+              public modalController: ModalController) {
 	}
 
 	ngOnInit(){
@@ -24,6 +26,11 @@ export class RoomPage implements OnInit{
   		this.temperature$ = measure.temperature
   		this.humidity$ = measure.humidity
   	})
+  }
+
+  openSettings(){
+    let settingsModal = this.modalController.create(RoomSettings, {room: this});
+    settingsModal.present();
   }
 
   _start(){

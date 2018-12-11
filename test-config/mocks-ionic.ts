@@ -1,6 +1,54 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+export class ViewControllerMock{
+  readReady = {
+    subscribe(){
+
+    }
+  };
+  writeReady = {
+    subscribe(){
+
+    }
+  };
+
+  dismiss(){
+    console.log('View Controller Dismiss Called');
+  }
+  _setHeader(){
+
+  }
+  _setNavbar(){
+
+  }
+  _setIONContent(){
+
+  }
+  _setIONContentRef(){
+
+  }
+}
+
+export class NavParamsMock {
+  data = {
+    room: {
+      temperature$: 30,
+      humidity$:50,
+      rules: {
+        maxTemperature: 0,
+        minTemperature: 0,
+        maxHumidity: 0,
+        minHumidity: 0
+      }
+    }
+  };
+
+  get(param){
+    return this.data[param];
+  }
+}
+
 export class PlatformMock {
   public ready(): Promise<string> {
     return new Promise((resolve) => {
