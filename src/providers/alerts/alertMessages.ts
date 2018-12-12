@@ -1,14 +1,18 @@
 export let alertMessages = {
 	maxTemperature: {
-		message: 'maximum temperature'
+		message: 'maximum temperature',
+		key: 'maxTemperature'
 	},
 	minTemperature: {
-		message: 'minimum temperature'
+		message: 'minimum temperature',
+		key: 'minTemperature'
 	},
 	maxHumidity: {
-		message: 'maximum humidity'
+		message: 'maximum humidity',
+		key: 'maxHumidity'
 	},
 	minHumidity: {
-		message: 'minimum humidity'
+		message: 'minimum humidity',
+		key: 'minHumidity'
 	}
 }

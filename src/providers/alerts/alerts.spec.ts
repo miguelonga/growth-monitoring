@@ -20,6 +20,11 @@ describe('AlertsProvider', () => {
     provider = p;
 	}));
 
+  beforeEach(() => {
+    jasmine.clock().uninstall();
+    jasmine.clock().install()
+  })
+
   it('should be created', () => {
     expect(provider).toBeTruthy();
   });
@@ -115,4 +120,39 @@ describe('AlertsProvider', () => {
     expect(presentAlertSpy).toHaveBeenCalledWith(expectedHumidityMessage)
     expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
+
+  fit('should store last time alert has been called in milliseconds', () => {
+    let measureMaximumTemperatureFailure = {
+      date: 'some date',
+      temperature: growthRules.maxTemperature + 1,
+      humidity: growthRules.maxHumidity - 1
+    }
+    let now = Date.now()
+    provider.check(measureMaximumTemperatureFailure)
+
+    let storedDate = new Date(provider.lastTimeofAlert.maxTemperature)
+    expect().toEqual(now)
+  })
+
+  it("shouldn't present the alert if is the same broken rule in two minutes", fakeAsync(() => {
+    let measureMaximumTemperatureFailure = {
+      date: 'some date',
+      temperature: growthRules.maxTemperature + 1,
+      humidity: growthRules.maxHumidity - 1
+    }
+    let oneAlertTime = 60000
+
+    setInterval(() => {
+      provider.check(measureMaximumTemperatureFailure)
+    }, oneAlertTime / 2)
+
+    jasmine.clock().tick(oneAlertTime)
+
+    expect(provider.alertCtrl.create.calls.count()).toEqual(1)
+
+    jasmine.clock().tick(oneAlertTime)
+    
+    expect(provider.alertCtrl.create.calls.count()).toEqual(2)
+    discardPeriodicTasks()
+  }));
 });

@@ -8,9 +8,17 @@ export class AlertsProvider {
 
 	period = 'growth'
 	rules = growthRules
+  lastTimeofAlert;
+  noBotherTime = 2 * 60 * 1000
 
   constructor(public alertCtrl: AlertController) {
-
+    let now = Date.now()
+    this.lastTimeofAlert = {
+      maxTemperature: now,
+      minTemperature: now,
+      maxHumidity: now,
+      minHumidity: now
+    }
   }
 
   check(measure){
@@ -31,13 +39,27 @@ export class AlertsProvider {
   	}
   }
 
+  hasBeenRecentlyAlerted(alertKey){
+    let now = Date.now()
+    console.log(now)
+    let timeFromLastAlert = this.lastTimeofAlert[alertKey] - now
+    console.log(timeFromLastAlert)
+    return (timeFromLastAlert > this.noBotherTime)
+  }
+
   presentAlert(alertData) {
+    let now = Date.now()
+    if(this.hasBeenRecentlyAlerted(alertData.key)){
+      console.log('ha sido ')
+      return
+    }
     let alert = this.alertCtrl.create({
       title: alertData.message,
       subTitle: 'has been triggered',
       buttons: ['Ok']
     });
     alert.present();
+    this.lastTimeofAlert[alertData.key] = now
   }
 
   editRules(rules){
