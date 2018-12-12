@@ -1,6 +1,7 @@
 import { TestBed, inject, fakeAsync } from '@angular/core/testing';
 import { MeasuresProvider } from './measures';
 import { AlertsProvider } from '../alerts/alerts';
+import { AlertControllerMock } from 'ionic-mocks';
 
 describe('MeasuresProvider', () => {
 
@@ -9,7 +10,7 @@ describe('MeasuresProvider', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ 
     	MeasuresProvider,
-      AlertsProvider
+      { provide: AlertsProvider, useClass: AlertsProviderMock }
     ]
   }));
 
@@ -37,3 +38,8 @@ describe('MeasuresProvider', () => {
 
   })
 });
+
+class AlertsProviderMock {
+  alertCtrl = AlertControllerMock.instance()
+  check(){}
+}
