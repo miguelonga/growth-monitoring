@@ -1,7 +1,9 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { AlertsProvider } from './alerts';
 import { growthRules } from './rules';
 import { alertMessages } from './alertMessages';
+import { AlertControllerMock } from 'ionic-mocks';
+import { AlertController } from 'ionic-angular';
 
 describe('AlertsProvider', () => {
 
@@ -9,7 +11,8 @@ describe('AlertsProvider', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ 
-    	AlertsProvider
+      { provide: AlertController, useFactory: () => AlertControllerMock.instance() },
+      AlertsProvider,
     ]
   }));
 
@@ -35,11 +38,12 @@ describe('AlertsProvider', () => {
       humidity: 0
     }
     let expectedMessage = alertMessages.maxTemperature
-    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let presentAlertSpy = spyOn(provider, 'presentAlert').and.callThrough()
 
     provider.check(newMeasure)
 
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 
   it('should alert if minimum temperature has been lowered', () => {
@@ -49,11 +53,12 @@ describe('AlertsProvider', () => {
       humidity: 'some humidity'
     }
     let expectedMessage = alertMessages.minTemperature
-    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let presentAlertSpy = spyOn(provider, 'presentAlert').and.callThrough()
 
     provider.check(newMeasure)
 
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 
   it('should alert if maximum humidity has been exceeded', () => {
@@ -63,11 +68,12 @@ describe('AlertsProvider', () => {
       humidity: growthRules.maxHumidity + 1
     }
     let expectedMessage = alertMessages.maxHumidity
-    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let presentAlertSpy = spyOn(provider, 'presentAlert').and.callThrough()
 
     provider.check(newMeasure)
 
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 
   it('should alert if minimum humidity has been lowered', () => {
@@ -77,15 +83,16 @@ describe('AlertsProvider', () => {
       humidity: growthRules.minHumidity - 1 
     }
     let expectedMessage = alertMessages.minHumidity
-    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let presentAlertSpy = spyOn(provider, 'presentAlert').and.callThrough()
 
     provider.check(newMeasure)
 
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedMessage)
+    expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 
   it('should be able to edit the measure rules', () => {
-    let showAlertSpy = spyOn(provider, 'showAlert').and.callThrough()
+    let presentAlertSpy = spyOn(provider, 'presentAlert').and.callThrough()
     let newRules = {
       maxTemperature: growthRules.maxTemperature - 2,
       minTemperature: growthRules.minTemperature,
@@ -99,12 +106,13 @@ describe('AlertsProvider', () => {
     }
     let expectedHumidityMessage = alertMessages.maxHumidity
     let expectedTemperatureMessage = alertMessages.maxTemperature
-    expect(showAlertSpy.calls.any()).toBe(false)
+    expect(presentAlertSpy.calls.any()).toBe(false)
 
     provider.editRules(newRules)   
     provider.check(measureForNewRulesMaximumsFailures)
 
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedTemperatureMessage)
-    expect(showAlertSpy).toHaveBeenCalledWith(expectedHumidityMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedTemperatureMessage)
+    expect(presentAlertSpy).toHaveBeenCalledWith(expectedHumidityMessage)
+    expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 });
