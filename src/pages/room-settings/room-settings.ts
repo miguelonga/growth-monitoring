@@ -21,25 +21,26 @@ export class RoomSettings {
     minTemperature: {
       color: 'danger',
       icon: 'thermometer',
-      maxRangeInput: 35,
-      minRangeInput: 16,
+      maxRangeInput: 24,
+      minRangeInput: 13,
       name: 'Min temperature'
     },
     maxHumidity: {
       color: 'primary',
       icon: 'water',
-      maxRangeInput: 35,
-      minRangeInput: 16,
+      maxRangeInput: 85,
+      minRangeInput: 50,
       name: 'Max humidity'
     },
     minHumidity: {
       color: 'primary',
       icon: 'water',
-      maxRangeInput: 35,
-      minRangeInput: 16,
+      maxRangeInput: 50,
+      minRangeInput: 30,
       name: 'Min humidity'
     }
   }
+  refresInterval = 0;
 
   constructor(public viewCtrl: ViewController,
   						public navParams: NavParams,

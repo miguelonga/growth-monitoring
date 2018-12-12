@@ -11,13 +11,15 @@ import { RoomSettings } from '../room-settings/room-settings'
 export class RoomPage implements OnInit{
 	temperature$;
 	humidity$;
-	refreshInterval = 1000;
+  measureInterval;
+	refreshInterval = 30000;
   
   constructor(public measuresProvider: MeasuresProvider,
               public modalController: ModalController) {
 	}
 
 	ngOnInit(){
+    this.measure()
   	this._start()
 	}
 
@@ -30,11 +32,16 @@ export class RoomPage implements OnInit{
 
   openSettings(){
     let settingsModal = this.modalController.create(RoomSettings, {room: this});
+    settingsModal.onDidDismiss(data => {
+      this = data
+      clearInterval(this.measureInterval);
+      this._start()
+    });
     settingsModal.present();
   }
 
   _start(){
-  	let measureInterval = setInterval(() => {
+  	this.measureInterval = setInterval(() => {
   		this.measure()
   	}, this.refreshInterval)
   }
