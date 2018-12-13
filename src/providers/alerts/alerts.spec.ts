@@ -38,7 +38,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if maximum temperature has been exceeded', () => {
     let newMeasure = {
-      date: 'some date',
+      date: '2018-11-30 15:53:23',
       temperature: growthRules.maxTemperature + 1,
       humidity: 0
     }
@@ -53,7 +53,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if minimum temperature has been lowered', () => {
     let newMeasure = {
-      date: 'some date',
+      date: '2018-11-30 15:53:23',
       temperature: growthRules.minTemperature - 1,
       humidity: 'some humidity'
     }
@@ -68,7 +68,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if maximum humidity has been exceeded', () => {
     let newMeasure = {
-      date: 'some date',
+      date: '2018-11-30 15:53:23',
       temperature: 'some temperature',
       humidity: growthRules.maxHumidity + 1
     }
@@ -83,7 +83,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if minimum humidity has been lowered', () => {
     let newMeasure = {
-      date: 'some date',
+      date: '2018-11-30 15:53:23',
       temperature: 'some temperature',
       humidity: growthRules.minHumidity - 1 
     }
@@ -105,7 +105,7 @@ describe('AlertsProvider', () => {
       minHumidity: growthRules.minHumidity
     }
     let measureForNewRulesMaximumsFailures = {
-      date: 'some date',
+      date: '2018-11-30 15:53:23',
       temperature: newRules.maxTemperature + 1,
       humidity: newRules.maxHumidity + 1 
     }
@@ -121,38 +121,44 @@ describe('AlertsProvider', () => {
     expect(provider.alertCtrl.create).toHaveBeenCalled()
   })
 
-  fit('should store last time alert has been called in milliseconds', () => {
-    let measureMaximumTemperatureFailure = {
-      date: 'some date',
-      temperature: growthRules.maxTemperature + 1,
-      humidity: growthRules.maxHumidity - 1
-    }
-    let now = Date.now()
-    provider.check(measureMaximumTemperatureFailure)
+  it('should store last date the alert has been called', () => {
+    let expectedAlert = 'maxTemperature'
 
-    let storedDate = new Date(provider.lastTimeofAlert.maxTemperature)
-    expect().toEqual(now)
+    provider.store(expectedAlert, '2018-11-30 15:53:23')
+
+    expect(provider.lastTimeAlert.maxTemperature).toEqual('2018-11-30 15:53:23')
   })
 
-  it("shouldn't present the alert if is the same broken rule in two minutes", fakeAsync(() => {
+  it('should know if there is enought no bothering time for next alert', () => {
+    let expectedAlert = 'maxTemperature'
+    provider.store(expectedAlert, '2018-11-30 15:53:23')
+    let result = provider.canBeAlerted(expectedAlert, '2018-11-30 15:54:23')
+    expect(result).toBe(false)
+  })
+
+  it("shouldn't present the alert if will be bother", () => {
     let measureMaximumTemperatureFailure = {
-      date: 'some date',
+      date: '2018-11-30 15:52:23',
       temperature: growthRules.maxTemperature + 1,
       humidity: growthRules.maxHumidity - 1
     }
-    let oneAlertTime = 60000
+    
+    provider.check(measureMaximumTemperatureFailure)
 
-    setInterval(() => {
-      provider.check(measureMaximumTemperatureFailure)
-    }, oneAlertTime / 2)
+    measureMaximumTemperatureFailure.date = '2018-11-30 15:53:23'
 
-    jasmine.clock().tick(oneAlertTime)
+    provider.check(measureMaximumTemperatureFailure)
+
+    measureMaximumTemperatureFailure.date = '2018-11-30 15:54:23'
+
+    provider.check(measureMaximumTemperatureFailure)
 
     expect(provider.alertCtrl.create.calls.count()).toEqual(1)
 
-    jasmine.clock().tick(oneAlertTime)
-    
+    measureMaximumTemperatureFailure.date = '2018-11-30 15:59:23'
+
+    provider.check(measureMaximumTemperatureFailure)
+
     expect(provider.alertCtrl.create.calls.count()).toEqual(2)
-    discardPeriodicTasks()
   }));
 });

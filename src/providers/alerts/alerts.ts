@@ -8,17 +8,16 @@ export class AlertsProvider {
 
 	period = 'growth'
 	rules = growthRules
-  lastTimeofAlert;
-  noBotherTime = 2 * 60 * 1000
+  lastTimeAlert = {
+    maxTemperature: '',
+    minTemperature: '',
+    maxHumidity: '',
+    minHumidity: ''
+  }
+  noBotheringMinutes = 3
 
   constructor(public alertCtrl: AlertController) {
-    let now = Date.now()
-    this.lastTimeofAlert = {
-      maxTemperature: now,
-      minTemperature: now,
-      maxHumidity: now,
-      minHumidity: now
-    }
+
   }
 
   check(measure){
@@ -26,40 +25,54 @@ export class AlertsProvider {
   	let humidity = measure.humidity
 
   	if(temperature >= this.rules.maxTemperature){
-  		this.presentAlert(alertMessages.maxTemperature)
+      let rule = 'maxTemperature'
+      this.process(rule, measure.date)
   	}
   	if(temperature <= this.rules.minTemperature){
-  		this.presentAlert(alertMessages.minTemperature)
-  	}
-  	if(humidity <= this.rules.minHumidity){
-  		this.presentAlert(alertMessages.minHumidity)
+      let rule = 'minTemperature'
+      this.process(rule, measure.date)
   	}
   	if(humidity >= this.rules.maxHumidity){
-  		this.presentAlert(alertMessages.maxHumidity)
+      let rule = 'maxHumidity'
+      this.process(rule, measure.date)
   	}
+    if(humidity <= this.rules.minHumidity){
+      let rule = 'minHumidity'
+      this.process(rule, measure.date)
+    }
   }
 
-  hasBeenRecentlyAlerted(alertKey){
-    let now = Date.now()
-    console.log(now)
-    let timeFromLastAlert = this.lastTimeofAlert[alertKey] - now
-    console.log(timeFromLastAlert)
-    return (timeFromLastAlert > this.noBotherTime)
+  process(rule, date){
+    console.log(rule, date)
+    if(this.canBeAlerted(rule, date)){
+      this.presentAlert(alertMessages[rule])
+    }
+    this.store(rule, date)
+  }
+
+  store(alert, date){
+    this.lastTimeAlert[alert] = date
+  }
+
+  canBeAlerted(alert, date){
+    if(this.lastTimeAlert[alert] === ''){
+      return true
+    }
+    let toCompareDate = new Date(date)
+    let lastTimeAlert = new Date(this.lastTimeAlert[alert])
+    
+    lastTimeAlert.setMinutes(lastTimeAlert.getMinutes() + this.noBotheringMinutes)
+    
+    return (lastTimeAlert < toCompareDate)
   }
 
   presentAlert(alertData) {
-    let now = Date.now()
-    if(this.hasBeenRecentlyAlerted(alertData.key)){
-      console.log('ha sido ')
-      return
-    }
     let alert = this.alertCtrl.create({
       title: alertData.message,
       subTitle: 'has been triggered',
       buttons: ['Ok']
     });
     alert.present();
-    this.lastTimeofAlert[alertData.key] = now
   }
 
   editRules(rules){
