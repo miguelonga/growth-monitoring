@@ -33,7 +33,7 @@ export class RoomPage implements OnInit{
   openSettings(){
     let settingsModal = this.modalController.create(RoomSettings, {room: this});
     settingsModal.onDidDismiss(data => {
-      this = data
+      this.refreshInterval = data.refreshInterval
       clearInterval(this.measureInterval);
       this._start()
     });

@@ -137,25 +137,19 @@ describe('AlertsProvider', () => {
   })
 
   it("shouldn't present the alert if will be bother", () => {
+    let firstAlertTime = '2018-11-30 15:52:23'
     let measureMaximumTemperatureFailure = {
-      date: '2018-11-30 15:52:23',
+      date: firstAlertTime,
       temperature: growthRules.maxTemperature + 1,
       humidity: growthRules.maxHumidity - 1
     }
+    let firstAlertTimePlusNoBotherTime = '2018-11-30 15:57:23'
     
-    provider.check(measureMaximumTemperatureFailure)
-
-    measureMaximumTemperatureFailure.date = '2018-11-30 15:53:23'
-
-    provider.check(measureMaximumTemperatureFailure)
-
-    measureMaximumTemperatureFailure.date = '2018-11-30 15:54:23'
-
     provider.check(measureMaximumTemperatureFailure)
 
     expect(provider.alertCtrl.create.calls.count()).toEqual(1)
 
-    measureMaximumTemperatureFailure.date = '2018-11-30 15:59:23'
+    measureMaximumTemperatureFailure.date = firstAlertTimePlusNoBotherTime
 
     provider.check(measureMaximumTemperatureFailure)
 

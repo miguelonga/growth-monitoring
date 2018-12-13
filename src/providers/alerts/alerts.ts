@@ -46,8 +46,8 @@ export class AlertsProvider {
     console.log(rule, date)
     if(this.canBeAlerted(rule, date)){
       this.presentAlert(alertMessages[rule])
+      this.store(rule, date)
     }
-    this.store(rule, date)
   }
 
   store(alert, date){
