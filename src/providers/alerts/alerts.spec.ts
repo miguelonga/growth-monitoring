@@ -143,8 +143,14 @@ describe('AlertsProvider', () => {
       temperature: growthRules.maxTemperature + 1,
       humidity: growthRules.maxHumidity - 1
     }
-    let firstAlertTimePlusNoBotherTime = '2018-11-30 15:57:23'
+    let firstAlertTimePlusNoBotherTime = '2018-11-30 15:55:23'
     
+    provider.check(measureMaximumTemperatureFailure)
+
+    expect(provider.alertCtrl.create.calls.count()).toEqual(1)
+
+    let firstAlertTimeWithoutNoBotherTime = '2018-11-30 15:54:23'
+
     provider.check(measureMaximumTemperatureFailure)
 
     expect(provider.alertCtrl.create.calls.count()).toEqual(1)

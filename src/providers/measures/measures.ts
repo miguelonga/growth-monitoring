@@ -19,10 +19,13 @@ export class MeasuresProvider {
   }
 
   simulateMeasure(){
+    let now = new Date().toISOString()
   	if(this.index === this.data.length){
   		this.index = 0
   	}
   	this.index += 1
+    let measure = this.data[this.index]
+    measure.date = now
   	return this.data[this.index];
   }
 }

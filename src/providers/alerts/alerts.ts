@@ -14,7 +14,7 @@ export class AlertsProvider {
     maxHumidity: '',
     minHumidity: ''
   }
-  noBotheringMinutes = 3
+  noBotheringMinutes = 1
 
   constructor(public alertCtrl: AlertController) {
 
@@ -43,7 +43,6 @@ export class AlertsProvider {
   }
 
   process(rule, date){
-    console.log(rule, date)
     if(this.canBeAlerted(rule, date)){
       this.presentAlert(alertMessages[rule])
       this.store(rule, date)
