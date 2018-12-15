@@ -8,6 +8,7 @@ import { AlertController } from 'ionic-angular';
 describe('AlertsProvider', () => {
 
   let provider;
+  let someIsoDate = new Date('2018-11-30 15:53:23').toISOString()
 
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ 
@@ -38,7 +39,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if maximum temperature has been exceeded', () => {
     let newMeasure = {
-      date: '2018-11-30 15:53:23',
+      date: someIsoDate,
       temperature: growthRules.maxTemperature + 1,
       humidity: 0
     }
@@ -53,7 +54,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if minimum temperature has been lowered', () => {
     let newMeasure = {
-      date: '2018-11-30 15:53:23',
+      date: someIsoDate,
       temperature: growthRules.minTemperature - 1,
       humidity: 'some humidity'
     }
@@ -68,7 +69,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if maximum humidity has been exceeded', () => {
     let newMeasure = {
-      date: '2018-11-30 15:53:23',
+      date: someIsoDate,
       temperature: 'some temperature',
       humidity: growthRules.maxHumidity + 1
     }
@@ -83,7 +84,7 @@ describe('AlertsProvider', () => {
 
   it('should alert if minimum humidity has been lowered', () => {
     let newMeasure = {
-      date: '2018-11-30 15:53:23',
+      date: someIsoDate,
       temperature: 'some temperature',
       humidity: growthRules.minHumidity - 1 
     }
@@ -105,7 +106,7 @@ describe('AlertsProvider', () => {
       minHumidity: growthRules.minHumidity
     }
     let measureForNewRulesMaximumsFailures = {
-      date: '2018-11-30 15:53:23',
+      date: someIsoDate,
       temperature: newRules.maxTemperature + 1,
       humidity: newRules.maxHumidity + 1 
     }
@@ -124,41 +125,48 @@ describe('AlertsProvider', () => {
   it('should store last date the alert has been called', () => {
     let expectedAlert = 'maxTemperature'
 
-    provider.store(expectedAlert, '2018-11-30 15:53:23')
+    provider.store(expectedAlert, someIsoDate)
 
-    expect(provider.lastTimeAlert.maxTemperature).toEqual('2018-11-30 15:53:23')
+    expect(provider.lastTimeAlert.maxTemperature).toEqual(someIsoDate)
   })
 
   it('should know if there is enought no bothering time for next alert', () => {
     let expectedAlert = 'maxTemperature'
-    provider.store(expectedAlert, '2018-11-30 15:53:23')
-    let result = provider.canBeAlerted(expectedAlert, '2018-11-30 15:54:23')
+    let measureDate = sumMinutes(someIsoDate, provider.noBotheringMinutes - 1)
+    provider.store(expectedAlert, someIsoDate)
+    let result = provider.canBeAlerted(expectedAlert, measureDate)
     expect(result).toBe(false)
   })
 
   it("shouldn't present the alert if will be bother", () => {
-    let firstAlertTime = '2018-11-30 15:52:23'
+    let firstAlertTime = someIsoDate
     let measureMaximumTemperatureFailure = {
       date: firstAlertTime,
       temperature: growthRules.maxTemperature + 1,
       humidity: growthRules.maxHumidity - 1
     }
-    let firstAlertTimePlusNoBotherTime = '2018-11-30 15:55:23'
+    let firstAlertTimeWithoutNoBotherTime = sumMinutes(firstAlertTime, provider.noBotheringMinutes - 1)
+    let firstAlertTimePlusNoBotherTime = sumMinutes(firstAlertTime, provider.noBotheringMinutes + 1)
     
     provider.check(measureMaximumTemperatureFailure)
-
     expect(provider.alertCtrl.create.calls.count()).toEqual(1)
 
-    let firstAlertTimeWithoutNoBotherTime = '2018-11-30 15:54:23'
-
+    measureMaximumTemperatureFailure.date = firstAlertTimeWithoutNoBotherTime
     provider.check(measureMaximumTemperatureFailure)
-
     expect(provider.alertCtrl.create.calls.count()).toEqual(1)
 
     measureMaximumTemperatureFailure.date = firstAlertTimePlusNoBotherTime
-
     provider.check(measureMaximumTemperatureFailure)
-
     expect(provider.alertCtrl.create.calls.count()).toEqual(2)
   }));
 });
+
+let sumMinutes = function(date, minutes){
+  date = new Date(date)
+  date = new Date(date.setMinutes(date.getMinutes() + minutes))
+  return date.toISOString()
+}
+
+
+
+

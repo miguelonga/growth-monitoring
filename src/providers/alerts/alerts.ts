@@ -14,7 +14,7 @@ export class AlertsProvider {
     maxHumidity: '',
     minHumidity: ''
   }
-  noBotheringMinutes = 1
+  noBotheringMinutes = 3
 
   constructor(public alertCtrl: AlertController) {
 
