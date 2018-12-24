@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 import { AlertsProvider } from '../../providers/alerts/alerts';
 

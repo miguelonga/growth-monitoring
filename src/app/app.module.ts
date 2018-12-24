@@ -8,11 +8,13 @@ import { MyApp } from './app.component';
 import { MeasuresProvider } from '../providers/measures/measures';
 import { AlertsProvider } from '../providers/alerts/alerts';
 import { RoomSettings } from '../pages/room-settings/room-settings';
+import { Calendar } from '../pages/calendar/calendar';
 
 @NgModule({
   declarations: [
     MyApp,
-    RoomSettings
+    RoomSettings,
+    Calendar
   ],
   imports: [
     BrowserModule,
@@ -21,7 +23,8 @@ import { RoomSettings } from '../pages/room-settings/room-settings';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    RoomSettings
+    RoomSettings,
+    Calendar
   ],
   providers: [
     StatusBar,

@@ -18,14 +18,22 @@ export class MeasuresProvider {
   	return Observable.of(randomMeasure)
   }
 
+  retrieve(day): Observable<any>{
+    let dayMeasures = fakeData.filter(measure => {
+      return measure.date.substring(0,10) === day
+    })
+    return Observable.of(dayMeasures)
+  }
+
   simulateMeasure(){
     let now = new Date().toISOString()
-  	if(this.index === this.data.length){
-  		this.index = 0
-  	}
-  	this.index += 1
+    if(this.index === this.data.length){
+      this.index = 0
+    }
+    this.index += 1
     let measure = this.data[this.index]
     measure.date = now
-  	return this.data[this.index];
+    return this.data[this.index];
   }
+
 }

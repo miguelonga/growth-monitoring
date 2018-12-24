@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, ModalController } from 'ionic-angular';
 import { MeasuresProvider } from '../../providers/measures/measures'
 import { RoomSettings } from '../room-settings/room-settings'
+import { Calendar } from '../calendar/calendar'
 
 @IonicPage()
 @Component({
@@ -38,6 +39,11 @@ export class RoomPage implements OnInit{
       this._start()
     });
     settingsModal.present();
+  }
+
+  openCalendar(){
+    let calendarModal = this.modalController.create(Calendar);
+    calendarModal.present();
   }
 
   _start(){

@@ -84,7 +84,6 @@ describe('RoomPage', () => {
     expect(measureSpy.calls.count()).toBe(1)
 
     discardPeriodicTasks()
-    discardPeriodicTasks()
   }));
 
   it('renders new value each time it is measured', fakeAsync(() => {
@@ -123,10 +122,27 @@ describe('Room Page Object', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RoomPage);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('is compiled', () => {
     expect(component).toBeDefined()
   })
+
+  it('should open settings page if settings button clicked', () => {
+    const settingsButton = fixture.debugElement.query(By.css('#settings'));
+    const openSettingsSpy = spyOn(component, 'openSettings').and.callThrough()
+
+    settingsButton.triggerEventHandler('click'); 
+
+    expect(openSettingsSpy).toHaveBeenCalled()
+  });
+
+  it('should open calendar page if calendar button clicked', () => {
+    const calendarButton = fixture.debugElement.query(By.css('#calendar'));
+    const openCalendarSpy = spyOn(component, 'openCalendar').and.callThrough()
+
+    calendarButton.triggerEventHandler('click'); 
+
+    expect(openCalendarSpy).toHaveBeenCalled()
+  });
 })

@@ -3,7 +3,10 @@
   <ion-navbar>
     <ion-title>room-page</ion-title>
 	<ion-buttons end>
-		<button ion-button icon-only (click)="openSettings()">
+		<button id="calendar" ion-button icon-only (click)="openCalendar()">
+		  <ion-icon name="ios-calendar-outline"></ion-icon>
+		</button>
+		<button id="settings" ion-button icon-only (click)="openSettings()">
 		  <ion-icon name="ios-options-outline"></ion-icon>
 		</button>
 	</ion-buttons>

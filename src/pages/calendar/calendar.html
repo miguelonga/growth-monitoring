@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calendar
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="close()">
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-list-header>Select a day</ion-list-header>
+      <ion-item>
+        <ion-label>Day</ion-label>
+        <ion-datetime name="day" displayFormat="MM/DD/YYYY" (ionChange)="onDayChange($event)" [(ngModel)]="today"></ion-datetime>
+      </ion-item>
+  </ion-list>
+</ion-content>
